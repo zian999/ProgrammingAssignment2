@@ -6,17 +6,18 @@
 ## its inverse.
 
 makeCacheMatrix <- function(mx = matrix()) {
-  inv <- NULL
-  set <- function(a) {    # change the stored matrix and reset cached inverse
-    mx <<- a
-    inv <<- NULL
-  }
-  get <- function() mx    # return the stored matrix
-  set_inverse <- function(b) inv <<- b    # simply change the cached inverse
-  get_inverse <- function() inv    # return the chched inverse
-  list(set = set, get = get,    #return a list of 4 functions
-       set_inverse = set_inverse,
-       get_inverse = get_inverse)
+        inv <- NULL
+        set <- function(a) {    
+                # change the stored matrix and reset cached inverse
+                mx <<- a
+                inv <<- NULL
+        }
+        get <- function() mx    # return the stored matrix
+        set_inverse <- function(b) inv <<- b    # change the cached inverse
+        get_inverse <- function() inv    # return the chched inverse
+        list(set = set, get = get,    #return a list of 4 functions
+             set_inverse = set_inverse,
+             get_inverse = get_inverse)
 }
 
 
@@ -26,16 +27,17 @@ makeCacheMatrix <- function(mx = matrix()) {
 ## inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-          # take special "matrix" object as parameter
-  inv <- x$get_inverse()    # read the cached inverse
-  if(!is.null(inv)) {
-            # if cached inverse exists, then return it without calculating
-    message("getting cached data")
-    return(inv)
-  }
-  # if cached inverse doesn't exist, then do below to compute and cache it
-  data <- x$get()    # read the stored matrix
-  inv <- solve(data, ...)    # compute the inverse
-  x$set_inverse(inv)    # cache the inverse
-  inv
+        # take special "matrix" object as parameter
+        inv <- x$get_inverse()    # read the cached inverse
+        if(!is.null(inv)) {
+                # if cached inverse exists, then return it without calculating
+                message("getting cached data")
+                return(inv)
+        }
+        # if cached inverse doesn't exist, then
+        # do below to compute and cache it
+        data <- x$get()    # read the stored matrix
+        inv <- solve(data, ...)    # compute the inverse
+        x$set_inverse(inv)    # cache the inverse
+        inv
 }
